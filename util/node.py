@@ -2,7 +2,7 @@ import maya.api.OpenMaya as om2
 
 def createDGNode(name, nodeType):
     """
-
+    NOT IMPLEMENTED
     @param name:
     @param nodeType:
     @return:
@@ -12,22 +12,25 @@ def createDGNode(name, nodeType):
 
 def connectDGNode(NodeFrom, fromPort, NodeTo, toPort):
     """
-
+    NOT IMPLEMENTED
     @param NodeFrom:
     @param fromPort:
     @param NodeTo:
     @param toPort:
     @return:
     """
+    pass
 
 def getNextAvailablePlug(Node, plugName):
     """
-    Iteratively search for a plug name in a node, and return the next available plug
+    NOT IMPLEMENTED
 
+    Iteratively search for a plug name in a node, and return the next available plug
     :param Node:
     :param plugName:
     :return:
     """
+    pass
 
 def deleteNode(node):
     """
@@ -63,8 +66,6 @@ def getNextAvailablePlugInPlug(plug, childPlugName):
     @return: the plug found
     @rtype: MPlug
     """
-    returnPlug = plug
-    availablePlug = None
     _plugName = plug.name().split('.')[-1]
     if _plugName == childPlugName:
         return plug
@@ -104,7 +105,6 @@ def getNextAvailablePlugInPlug(plug, childPlugName):
 def isSourceConnectedTo(plug, nodeType=None, nodeName=None):
     """
     Check to see if the port is connected to any specific node types or node name
-    :param node:
     @param nodeType:
     @type nodeType: maya node type name
     @param nodeName:
@@ -112,19 +112,14 @@ def isSourceConnectedTo(plug, nodeType=None, nodeName=None):
     @return: True - match found, False no match found
     @rtype: boolean
     """
-    # TODO: ERROR: When selecting multiple objected/controls, multiple hypergraph get created, instead of aadding them all to the one hypergraph
-    # TODO: TEST THIS
     if plug.isSource and plug.isConnected:
-
         for destPlug in plug.destinations():
             if nodeName:
                 if nodeName in destPlug.name():
                     return True
-
             if nodeType:
                 node = destPlug.node()
                 nodeMfn = om2.MFnDependencyNode(node)
                 if nodeMfn.typeName == nodeType:
                     return True
     return False
-# TODO: Make this more generic method

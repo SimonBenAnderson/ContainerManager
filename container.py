@@ -12,7 +12,6 @@ def getObjectsContainers(mQueryObject = []):
     containerDict = {}
     nodeFn = om2.MFnContainerNode()
     selNodeFn = om2.MFnDependencyNode()
-    selList = mQueryObject
     containerObjs = getAllDagContainers()
 
     for selObj in mQueryObject:

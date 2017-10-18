@@ -36,3 +36,4 @@ suggest modifications and additions. The more the merrier
 - [ ] List UI to view assets in the container.
 - [ ] UI Icons, for simpler user interaction.
 - [ ] Overall code tidy up and refactor.
+- [ ] Pop-up small container name dialog
