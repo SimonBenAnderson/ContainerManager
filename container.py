@@ -6,8 +6,8 @@ def getObjectsContainers(mQueryObject = []):
     Return a list of containers that the passed in objects reside in.
 
     @param [] mQueryObject: list of objects you are wanting to know, in which container they exists.
-    @return: a dictionary, key = container name, value = container MObject.
-    @rtype: {},
+    @return: key = container name, value = container MObject.
+    @rtype: {}
     """
     containerDict = {}
     nodeFn = om2.MFnContainerNode()
@@ -192,28 +192,44 @@ def getContainerHyperLayout(container, create=True):
 
     return _hyperLayoutMo
 
-def exposeDAGObject(mobj):
+def isDagExposed(mobj):
+    """
+    Verify if object is exposed in a container
+
+    @param mobj: Object you wish to check
+    @return: return True if exposed, else False if not exposed
+    """
+    mfnDepNode = om2.MFnDependencyNode(mobj)
+    msgPlug = mfnDepNode.findPlug("message",True)
+    for _plug in msgPlug.destinations():
+        if "pnod" in _plug.partialName() and _plug.node().apiType() == om2.MFn.kContainer:
+            return True
+
+def exposeDagObject(mobj):
     """
     Exposes the object on the container it is connected to.
     @param om2.MObject mobj: DAG object you wish to expose in the container
     """
-    print("Expose DAG Object Called")
     mfnDepNode = om2.MFnDependencyNode(mobj)
     msgPlug = mfnDepNode.findPlug("message",True)
+
+    if isDagExposed(mobj):
+        return False
 
     for _plug in msgPlug.destinations():
         # selected object is not connected to anything
         if _plug.isNull:
             continue
+
         connectedNode = _plug.node()
+
         if connectedNode.apiType() == om2.MFn.kHyperLayout:
-            print(connectedNode, " is hyperlayout type")
             hyperLayoutDN = om2.MFnDependencyNode(connectedNode)
             hlMsgPlug = hyperLayoutDN.findPlug("message", True)
             # selected object is not connected to anything
             if hlMsgPlug.isNull:
                 continue
-            # TODO: Need to implement this still
+            # loop all the destination plugs
             for _plugDest in hlMsgPlug.destinations():
                 contNode = _plugDest.node()
                 if contNode.apiType() == om2.MFn.kContainer:
@@ -223,10 +239,10 @@ def exposeDAGObject(mobj):
                     if availablePlug is None:
                         print("Error: Could not expose selection")
                         return False
-                    print("RETURNED : {0}".format(availablePlug.name()))
-                    dgMod = om2.MDGModifier()
-                    dgMod.connect(msgPlug, availablePlug)
-                    dgMod.doIt()
+                    else:
+                        dgMod = om2.MDGModifier()
+                        dgMod.connect(msgPlug, availablePlug)
+                        dgMod.doIt()
 
 def addToContainer(mobj, containerObj):
     """

@@ -110,7 +110,7 @@ class ContainerManager(MayaQWidgetDockableMixin, QWidget):
         Exposes the object on the container it is already connected to
         """
         for selObj in self.pythonicSelection():
-            container.exposeDAGObject(selObj)
+            container.exposeDagObject(selObj)
 
     def hideExposedDagObject(self):
         for selObj in self.pythonicSelection():

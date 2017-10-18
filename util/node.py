@@ -70,7 +70,6 @@ def getNextAvailablePlugInPlug(plug, childPlugName):
         return plug
 
     if plug.isArray:
-        i=0
         # for i in xrange(plug.numElements()):
         for i in xrange(plug.evaluateNumElements()):
             tempP = plug.elementByPhysicalIndex(i)
@@ -81,13 +80,10 @@ def getNextAvailablePlugInPlug(plug, childPlugName):
                     if _plugName == childPlugName:
                         return plugResult
 
-        print(i, i+1)
-        print(plug.evaluateNumElements(), plug.isArray)
-
-        if i == plug.evaluateNumElements() and plug.isArray:
-            print(childPlugName, plug.elementByLogicalIndex(i+1))
-            plugResult = getNextAvailablePlugInPlug(plug.elementByLogicalIndex(i+1), childPlugName)
-            return plugResult
+        # if all plugs are occupied, then access the next plug in the array
+        nextPlugIndex = plug.evaluateNumElements()+1
+        plugResult = getNextAvailablePlugInPlug(plug.elementByLogicalIndex(nextPlugIndex), childPlugName)
+        return plugResult
 
     elif plug.isCompound:
         for i in xrange(plug.numChildren()):
@@ -102,7 +98,7 @@ def getNextAvailablePlugInPlug(plug, childPlugName):
                         _plugName = plugResult.name().split('.')[-1]
                         if _plugName == childPlugName:
                             return plugResult
-    # return None
+    return None
 
 
 def isSourceConnectedTo(plug, nodeType=None, nodeName=None):
