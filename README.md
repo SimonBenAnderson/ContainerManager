@@ -14,7 +14,7 @@ The container module can also be used to easily modify containers
 * Select the container that a selected asset is contained to 
 
 ****
-####Setup
+#### Setup
 Copy the root of this repo ```ContainerManager``` into your 
 system ```PYTHONPATH``` environemnt variables
 
@@ -30,7 +30,7 @@ Please feel free to comment, report bugs, add to the repo and
 suggest modifications and additions. The more the merrier
 
 ****
-###TODO
+### TODO
 
 - [ ] Expose / Hide parameters from the container.
 - [ ] List UI to view assets in the container.
